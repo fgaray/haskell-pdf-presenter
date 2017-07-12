@@ -12,7 +12,7 @@ import qualified Data.Map as Map
 import Data.Ord (comparing)
 import Data.Time.LocalTime (getCurrentTimeZone, utcToLocalTime)
 import Data.Time.Clock (getCurrentTime)
-import qualified Data.Time.Format (formatTime)
+import qualified Data.Time.Format (formatTime, defaultTimeLocale)
 import Foreign.Ptr (castPtr)
 import Graphics.Rendering.Cairo
 import Graphics.UI.Gtk
@@ -26,8 +26,8 @@ import System.Directory (canonicalizePath)
 import System.Exit (exitSuccess, exitFailure)
 import System.FilePath (takeFileName)
 import System.Glib
-import System.Locale (defaultTimeLocale)
 import Text.Printf (printf)
+import qualified Data.Text as T
 
 data TimerState =
   Counting Integer{-starting microseconds-} Integer{-ending microseconds-} |
@@ -282,7 +282,7 @@ guiMain state = do
            window `on` keyPressEvent $ do
              mods <- eventModifier
              name <- eventKeyName
-             b <- liftIO $ handleKey state mods (map toLower name)
+             b <- liftIO $ handleKey state mods (map toLower (T.unpack name))
              liftIO $ mapM_ widgetQueueDraw =<< mainWindows state
              return b
            -- Redraw the window when we switch slides.  Most (though not all)
@@ -658,7 +658,7 @@ gotoSlideDialog state = do
 -- Open and run a modal file selection dialog and set load the PDF document that is selected.
 openFileDialog state = do
   dialog <- fileChooserDialogNew (Just $ "Open - " ++ appName) Nothing FileChooserActionOpen
-            [(stockOpen, ResponseOk), (stockCancel, ResponseCancel)]
+            [((T.unpack stockOpen), ResponseOk), ((T.unpack stockCancel), ResponseCancel)]
   maybe (return ()) (void . fileChooserSetURI dialog) =<< readIORef (documentURL state)
   loopDialog dialog (openDoc state . head =<< fileChooserGetURIs dialog)
   widgetDestroy dialog
@@ -891,7 +891,7 @@ getMicroseconds = do
 getTime format = do
   tz <- getCurrentTimeZone
   utc <- getCurrentTime
-  return $ Data.Time.Format.formatTime defaultTimeLocale format (utcToLocalTime tz utc)
+  return $ Data.Time.Format.formatTime Data.Time.Format.defaultTimeLocale format (utcToLocalTime tz utc)
 
 ------------------------
 -- Loading and Rendering the PDF document
