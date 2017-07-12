@@ -78,13 +78,3 @@ Executable hpdfp
   
   -- Extra tools (e.g. alex, hsc2hs, ...) needed to build the source.
   -- Build-tools:         
-
--- URL for the project repository.
-Source-repository head
-  Type: mercurial
-  Location: http://michaeldadams.org/repos-pub/hg/haskell-pdf-presenter/
-
-Source-repository this
-  Type: mercurial
-  Location: http://michaeldadams.org/repos-pub/hg/haskell-pdf-presenter/
-  Tag: v0.2.5
