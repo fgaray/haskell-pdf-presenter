@@ -1,0 +1,26 @@
+CHANGELOG for Haskell Pdf Presenter
+========================================
+
+0.2.5
+	* Fixed missing minus sign in negative times
+
+0.2.4
+	* Change keybinding for changing monitors from "S" to "M"
+	* Fix positioning errors in the Glade GUI file
+	* Terminology fix: "presenter window" not "screen" or "view"
+
+0.2.3
+	* Fix compilation on GHC 7.4
+
+0.2.2
+	* Fixes to cabal meta-data
+	* Make sure all version numbers are up to date
+	* Spell checking and proof reading
+
+0.2.1
+	* Added support for closing files
+	* Added better time parsing
+	* Added CHANGELOG
+
+0.2
+	* Initial release
